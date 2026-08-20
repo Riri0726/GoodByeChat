@@ -60,13 +60,15 @@ export default function MusicUploader({ musicType, musicUrl, musicFile, onChange
             onClick={() => fileInputRef.current?.click()}
             style={{ padding: '1.5rem' }}
           >
-            <div className="upload-zone-icon" style={{ fontSize: '1.5rem' }}>
+            <div className="upload-zone-icon" style={{ fontSize: '1.6rem' }}>
               <FiMusic />
             </div>
-            <div className="upload-zone-text" style={{ fontSize: '0.85rem' }}>
+            <div className="upload-zone-text" style={{ fontSize: '0.9rem' }}>
               {musicFile ? musicFile.name : 'Click to upload audio file'}
             </div>
-            <div className="upload-zone-hint">MP3, WAV, OGG</div>
+            <div className="upload-zone-hint">
+              MP3, WAV, OGG • 🌟 <strong>Best Choice for Guaranteed Autoplay</strong> (starts instantly when envelope opens)
+            </div>
           </div>
           <input
             ref={fileInputRef}
@@ -92,8 +94,8 @@ export default function MusicUploader({ musicType, musicUrl, musicFile, onChange
             value={musicUrl || ''}
             onChange={(e) => handleUrlChange(e.target.value)}
           />
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-            ⚠️ YouTube autoplay may be limited by browser policies. Uploaded audio is recommended for best experience.
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+            ℹ️ Plays YouTube background audio automatically once the envelope is opened.
           </p>
         </div>
       )}
@@ -103,12 +105,12 @@ export default function MusicUploader({ musicType, musicUrl, musicFile, onChange
           <input
             type="url"
             className="form-input"
-            placeholder="Paste Spotify track URL (e.g., https://open.spotify.com/track/...)"
+            placeholder="Paste Spotify track or playlist URL (e.g., https://open.spotify.com/track/...)"
             value={musicUrl || ''}
             onChange={(e) => handleUrlChange(e.target.value)}
           />
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-            ⚠️ Spotify embeds may require user interaction. Uploaded audio is recommended for best experience.
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+            ℹ️ Spotify embed requires the recipient to tap <strong>Play</strong> on the Spotify widget due to Spotify's browser security rules.
           </p>
         </div>
       )}
