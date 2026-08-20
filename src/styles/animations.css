@@ -1,0 +1,156 @@
+/* ============================================
+   ANIMATIONS CSS — GoodByeChat
+   ============================================ */
+
+/* Floating particle base animation */
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(var(--drift, 50px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes particleTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Parallax depth layers */
+.parallax-slow {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+.parallax-medium {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+.parallax-fast {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* Staggered entrance animations */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+.stagger-7 { animation-delay: 0.7s; }
+.stagger-8 { animation-delay: 0.8s; }
+
+/* Polaroid tilt variations */
+@keyframes polaroidEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(var(--rotation, 0deg)) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rotation, 0deg)) scale(1);
+  }
+}
+
+/* Gentle floating for interactive elements */
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Letter text reveal - line by line */
+@keyframes letterReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Envelope scene background shimmer */
+@keyframes bgShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Heart shape for particles */
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.05); }
+}
+
+/* Sparkle rotation */
+@keyframes sparkleRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.3); }
+  50% { transform: rotate(180deg) scale(1); }
+  75% { transform: rotate(270deg) scale(1.3); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Page transition */
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: pageSlideIn 0.6s ease forwards;
+}
+
+/* Music visualizer bars */
+@keyframes musicBar {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+.music-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 20px;
+}
+
+.music-bar {
+  width: 3px;
+  background: var(--primary-light);
+  border-radius: 2px;
+  animation: musicBar 0.8s ease-in-out infinite;
+}
+
+.music-bar:nth-child(1) { animation-delay: 0s; }
+.music-bar:nth-child(2) { animation-delay: 0.15s; }
+.music-bar:nth-child(3) { animation-delay: 0.3s; }
+.music-bar:nth-child(4) { animation-delay: 0.45s; }
+
+/* Collage download flash */
+@keyframes downloadFlash {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
