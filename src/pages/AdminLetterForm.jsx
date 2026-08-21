@@ -6,8 +6,10 @@ import ThemeColorPicker from '../components/admin/ThemeColorPicker';
 import ImageUploader from '../components/admin/ImageUploader';
 import MusicUploader from '../components/admin/MusicUploader';
 import VoiceUploader from '../components/admin/VoiceUploader';
+import QRCodeModal from '../components/common/QRCodeModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiSave, FiEye, FiRefreshCw } from 'react-icons/fi';
+import { BsQrCode } from 'react-icons/bs';
 
 function generateCode() {
   const chars = 'abcdefghijkmnpqrstuvwxyz23456789';
@@ -26,6 +28,7 @@ export default function AdminLetterForm() {
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
+  const [showQrModal, setShowQrModal] = useState(false);
 
   // Form state
   const [recipientName, setRecipientName] = useState('');
@@ -242,6 +245,16 @@ export default function AdminLetterForm() {
       <div className="admin-header">
         <h1>{isEdit ? '✏️ Edit Letter' : '✉️ New Letter'}</h1>
         <div className="admin-header-actions">
+          {code && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setShowQrModal(true)}
+              title="Generate & Download QR Code"
+            >
+              <BsQrCode /> QR Code
+            </button>
+          )}
           {isEdit && (
             <button
               className="btn btn-ghost"
@@ -304,6 +317,16 @@ export default function AdminLetterForm() {
               onChange={(e) => setCode(e.target.value.replace(/\s/g, '').toLowerCase())}
               style={{ flex: 1 }}
             />
+            {code && (
+              <button
+                type="button"
+                className="btn btn-secondary btn-icon"
+                onClick={() => setShowQrModal(true)}
+                title="View & Download QR Code"
+              >
+                <BsQrCode />
+              </button>
+            )}
             {!isEdit && (
               <button
                 type="button"
@@ -390,6 +413,17 @@ export default function AdminLetterForm() {
           </motion.button>
         </div>
       </div>
+
+      {/* QR Code Modal */}
+      {code && (
+        <QRCodeModal
+          isOpen={showQrModal}
+          onClose={() => setShowQrModal(false)}
+          code={code}
+          recipientName={recipientName}
+          themeColor={themeColor}
+        />
+      )}
 
       {/* Toast */}
       <AnimatePresence>

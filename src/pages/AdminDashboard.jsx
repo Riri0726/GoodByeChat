@@ -7,6 +7,8 @@ import {
   FiCopy, FiExternalLink, FiLogOut,
   FiImage, FiMusic, FiMic
 } from 'react-icons/fi';
+import { BsQrCode } from 'react-icons/bs';
+import QRCodeModal from '../components/common/QRCodeModal';
 
 const themeLabels = {
   blue: '🔵 Blue',
@@ -21,6 +23,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState(null);
+  const [selectedQrLetter, setSelectedQrLetter] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -211,6 +214,13 @@ export default function AdminDashboard() {
                     </Link>
                     <button
                       className="btn btn-ghost btn-sm btn-icon"
+                      onClick={() => setSelectedQrLetter(letter)}
+                      title="Generate & Download QR Code"
+                    >
+                      <BsQrCode size={14} />
+                    </button>
+                    <button
+                      className="btn btn-ghost btn-sm btn-icon"
                       onClick={() => copyLink(letter.code)}
                       title="Copy link"
                     >
@@ -239,6 +249,17 @@ export default function AdminDashboard() {
         )}
       </div>
 
+      {/* QR Code Generator & Download Modal */}
+      {selectedQrLetter && (
+        <QRCodeModal
+          isOpen={Boolean(selectedQrLetter)}
+          onClose={() => setSelectedQrLetter(null)}
+          code={selectedQrLetter.code}
+          recipientName={selectedQrLetter.recipient_name}
+          themeColor={selectedQrLetter.theme_color}
+        />
+      )}
+
       {/* Toast */}
       <AnimatePresence>
         {toast && (
@@ -255,3 +276,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
