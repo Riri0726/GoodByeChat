@@ -16,6 +16,19 @@ import {
 } from 'react-icons/lu';
 import mammoth from 'mammoth';
 
+function ToolbarButton({ onClick, isActive, children, title }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={isActive ? 'is-active' : ''}
+      title={title}
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function RichTextEditor({ content, onChange }) {
   const fileInputRef = useRef(null);
 
@@ -77,20 +90,16 @@ export default function RichTextEditor({ content, onChange }) {
 
   if (!editor) return null;
 
-  const ToolbarButton = ({ onClick, isActive, children, title }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      className={isActive ? 'is-active' : ''}
-      title={title}
-    >
-      {children}
-    </button>
-  );
-
   return (
-    <div className="editor-container">
-      <div className="editor-toolbar">
+    <div
+      className="editor-container"
+      onClick={() => {
+        if (editor && !editor.isFocused) {
+          editor.commands.focus();
+        }
+      }}
+    >
+      <div className="editor-toolbar" onClick={(e) => e.stopPropagation()}>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           isActive={editor.isActive('bold')}
@@ -223,7 +232,14 @@ export default function RichTextEditor({ content, onChange }) {
         />
       </div>
 
-      <div className="editor-content">
+      <div
+        className="editor-content"
+        onClick={() => {
+          if (editor && !editor.isFocused) {
+            editor.commands.focus();
+          }
+        }}
+      >
         <EditorContent editor={editor} />
       </div>
     </div>
