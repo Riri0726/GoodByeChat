@@ -8,10 +8,8 @@ import PolaroidGallery from '../components/letter/PolaroidGallery';
 import CollageView from '../components/letter/CollageView';
 import MusicPlayer from '../components/letter/MusicPlayer';
 import VoicePopup from '../components/letter/VoicePopup';
-import QRCodeModal from '../components/common/QRCodeModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiGrid } from 'react-icons/fi';
-import { BsQrCode } from 'react-icons/bs';
 
 export default function LetterPage() {
   const { code } = useParams();
@@ -27,7 +25,6 @@ export default function LetterPage() {
   const [playMode, setPlayMode] = useState(null); // 'letter' or 'voice'
   const [shouldPlayMusic, setShouldPlayMusic] = useState(false);
   const [showCollage, setShowCollage] = useState(false);
-  const [showQrModal, setShowQrModal] = useState(false);
 
   // Voice audio ref
   const [voiceAudio] = useState(() => typeof Audio !== 'undefined' ? new Audio() : null);
@@ -123,14 +120,19 @@ export default function LetterPage() {
     }
   }, [letter, voiceAudio]);
 
-  // Cleanup voice audio
+  // Handle voice audio end
   useEffect(() => {
-    return () => {
-      if (voiceAudio) {
-        voiceAudio.pause();
-        voiceAudio.src = '';
-      }
+    if (!voiceAudio) return;
+
+    const handleEnded = () => {
+      setVoicePlaying(false);
+      // Switch back to letter music if available
+      setPlayMode('letter');
+      setShouldPlayMusic(true);
     };
+
+    voiceAudio.addEventListener('ended', handleEnded);
+    return () => voiceAudio.removeEventListener('ended', handleEnded);
   }, [voiceAudio]);
 
   // Loading state
@@ -231,20 +233,18 @@ export default function LetterPage() {
               <PolaroidGallery images={images} />
             )}
 
-            {/* Bottom Actions: Collage & QR Code */}
-            <motion.div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-                gap: '1rem',
-                padding: '2rem 1rem 4rem',
-              }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              {images.length > 0 && (
+            {/* Collage toggle button */}
+            {images.length > 0 && (
+              <motion.div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  padding: '2rem 1rem 4rem',
+                }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+              >
                 <button
                   className="btn btn-secondary btn-lg"
                   onClick={() => setShowCollage(true)}
@@ -252,15 +252,8 @@ export default function LetterPage() {
                   <FiGrid style={{ marginRight: '0.5rem' }} />
                   View as Collage & Download
                 </button>
-              )}
-              <button
-                className="btn btn-secondary btn-lg"
-                onClick={() => setShowQrModal(true)}
-              >
-                <BsQrCode style={{ marginRight: '0.5rem' }} />
-                Get QR Souvenir
-              </button>
-            </motion.div>
+              </motion.div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
@@ -282,17 +275,6 @@ export default function LetterPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* QR Code Modal */}
-      {letter && (
-        <QRCodeModal
-          isOpen={showQrModal}
-          onClose={() => setShowQrModal(false)}
-          code={letter.code}
-          recipientName={letter.recipient_name}
-          themeColor={letter.theme_color}
-        />
-      )}
     </div>
   );
 }
